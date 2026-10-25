@@ -1,0 +1,201 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- Native Mobile App Viewport: prevents unwanted zoom, handles notch displays via viewport-fit=cover -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
+    
+    <title>Onampilly Kavadi Sangam</title>
+    <meta name="description" content="Onampilly Kavadi Sangam Festival Financial Workspace: Direct access mode, real-time Cloud Firestore sync, permanent delete guarantee, and transaction purge controls." />
+    
+    <!-- Native Mobile App & PWA Home Screen Configuration -->
+    <meta name="theme-color" content="#1c1917" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="KavadiSangam" />
+    <meta name="application-name" content="Onampilly Kavadi Sangam" />
+    <meta name="format-detection" content="telephone=no" />
+    <meta name="msapplication-TileColor" content="#1c1917" />
+    
+    <!-- Manifest & Touch Icons -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/icon.svg" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    
+    <!-- OpenGraph & Social Metadata -->
+    <meta property="og:title" content="Onampilly Kavadi Sangam" />
+    <meta property="og:description" content="Onampilly Kavadi Sangam Festival Financial Workspace: Direct access mode, real-time Cloud Firestore sync, permanent delete guarantee, and transaction purge controls." />
+    <meta property="og:type" content="website" />
+    <meta name="twitter:card" content="summary_large_image" />
+    
+    <!-- Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manjari:wght@400;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Rozha+One&display=swap" rel="stylesheet">
+
+    <!-- Native Splash Screen Inline Styles (Zero-latency launch presentation) -->
+    <style>
+      #app-splash-screen {
+        position: fixed;
+        inset: 0;
+        z-index: 99999;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: #0c0a09;
+        background: radial-gradient(circle at center, #1c1917 0%, #0c0a09 100%);
+        color: #fef3c7;
+        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        padding: 24px;
+        transition: opacity 0.45s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.45s ease;
+      }
+
+      #app-splash-screen.splash-hidden {
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+      }
+
+      .splash-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        max-width: 320px;
+        animation: splashFadeIn 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+      }
+
+      @keyframes splashFadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.94);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      .splash-emblem {
+        width: 80px;
+        height: 80px;
+        border-radius: 24px;
+        background: linear-gradient(135deg, rgba(245, 158, 11, 0.2) 0%, rgba(180, 83, 9, 0.3) 100%);
+        border: 1px solid rgba(245, 158, 11, 0.4);
+        box-shadow: 0 0 35px rgba(245, 158, 11, 0.25), inset 0 0 15px rgba(245, 158, 11, 0.15);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 40px;
+        margin-bottom: 20px;
+        animation: emblemPulse 2s ease-in-out infinite alternate;
+      }
+
+      @keyframes emblemPulse {
+        from {
+          box-shadow: 0 0 25px rgba(245, 158, 11, 0.2);
+          transform: scale(1);
+        }
+        to {
+          box-shadow: 0 0 45px rgba(245, 158, 11, 0.45);
+          transform: scale(1.04);
+        }
+      }
+
+      .splash-tag {
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        color: #f59e0b;
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        padding: 4px 12px;
+        border-radius: 9999px;
+        margin-bottom: 12px;
+      }
+
+      .splash-title {
+        font-size: 18px;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+        color: #fef3c7;
+        margin: 0 0 4px 0;
+        line-height: 1.25;
+      }
+
+      .splash-subtitle {
+        font-size: 13px;
+        font-weight: 600;
+        color: #d97706;
+        margin: 0 0 28px 0;
+        font-style: italic;
+      }
+
+      .splash-progress-track {
+        width: 140px;
+        height: 3px;
+        background: rgba(255, 255, 255, 0.1);
+        border-radius: 9999px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .splash-progress-bar {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 40%;
+        background: linear-gradient(90deg, #d97706, #f59e0b, #fef3c7);
+        border-radius: 9999px;
+        animation: splashProgress 1.4s infinite ease-in-out;
+      }
+
+      @keyframes splashProgress {
+        0% {
+          left: -40%;
+          width: 40%;
+        }
+        50% {
+          left: 30%;
+          width: 60%;
+        }
+        100% {
+          left: 100%;
+          width: 40%;
+        }
+      }
+
+      .splash-status {
+        margin-top: 14px;
+        font-size: 11px;
+        font-weight: 600;
+        color: #a8a29e;
+        letter-spacing: 0.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Instant Native Mobile Launch Splash Screen -->
+    <div id="app-splash-screen">
+      <div class="splash-content">
+        <div class="splash-emblem">🔱</div>
+        <div class="splash-tag">Om Saravana Bhavaya Namaha</div>
+        <h1 class="splash-title">ONAMPILLY KAVADI SANGAM</h1>
+        <p class="splash-subtitle">Thaipooyam Maholsavam 2027</p>
+        <div class="splash-progress-track">
+          <div class="splash-progress-bar"></div>
+        </div>
+        <span class="splash-status">Initializing Portal...</span>
+      </div>
+    </div>
+
+    <!-- React App Root Container -->
+    <div id="root"></div>
+
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

@@ -1,0 +1,8 @@
+{
+  "name": "Onampilly Kavadi Sangam",
+  "description": "Onampilly Kavadi Sangam Festival Financial Workspace: Direct access mode, real-time Cloud Firestore sync, permanent delete guarantee, and transaction purge controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

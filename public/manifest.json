@@ -1,0 +1,40 @@
+{
+  "id": "/",
+  "name": "Onampilly Kavadi Sangam",
+  "short_name": "KavadiSangam",
+  "description": "Official Festival Operations & Financial Management Portal for Thaipooyam Maholsavam 2027, Kalady, Kerala.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "theme_color": "#1c1917",
+  "background_color": "#0c0a09",
+  "lang": "en",
+  "categories": ["finance", "utilities", "events"],
+  "icons": [
+    {
+      "src": "/pwa-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/pwa-maskable-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    },
+    {
+      "src": "/icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any"
+    }
+  ]
+}

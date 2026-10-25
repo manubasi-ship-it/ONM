@@ -1,0 +1,480 @@
+{
+  "entities": {
+    "Transaction": {
+      "title": "Transaction",
+      "description": "Financial ledger record of festival income or expense with bilingual receipt metadata",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique transaction document identifier"
+        },
+        "receiptNo": {
+          "type": "string",
+          "description": "Sequential bilingual receipt voucher number"
+        },
+        "type": {
+          "type": "string",
+          "enum": ["income", "expense"],
+          "description": "Transaction category classification"
+        },
+        "category": {
+          "type": "string",
+          "description": "Category such as Offering, Public Collection, Annadanam, Melam, Decoration"
+        },
+        "amount": {
+          "type": "number",
+          "description": "Transaction monetary amount in Indian National Rupees (INR)"
+        },
+        "donorOrPayee": {
+          "type": "string",
+          "description": "Name of devotee, sponsor, or vendor"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Contact phone number for receipt delivery"
+        },
+        "location": {
+          "type": "string",
+          "description": "Desham, house name, or area"
+        },
+        "paymentMode": {
+          "type": "string",
+          "enum": ["cash", "upi", "bank_transfer"],
+          "description": "Payment mode used"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["completed", "pending", "cancelled"],
+          "description": "Transaction reconciliation status"
+        },
+        "notes": {
+          "type": "string",
+          "description": "Additional notes or prayer intention"
+        },
+        "collectedBy": {
+          "type": "string",
+          "description": "Name or ID of volunteer/admin recording the transaction"
+        },
+        "collectedByRole": {
+          "type": "string",
+          "enum": ["admin", "volunteer"],
+          "description": "Access tier of recorder"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of transaction entry"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of transaction update"
+        }
+      },
+      "required": ["id", "receiptNo", "type", "category", "amount", "donorOrPayee", "paymentMode", "status", "collectedBy"]
+    },
+    "Setting": {
+      "title": "Setting",
+      "description": "Portal and Sangam configuration including UPI VPA and festival metadata",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identifier for configuration record"
+        },
+        "sangamNameEnglish": {
+          "type": "string",
+          "description": "Official English name of the Sangam"
+        },
+        "sangamNameMalayalam": {
+          "type": "string",
+          "description": "Official Malayalam name of the Sangam"
+        },
+        "upiId": {
+          "type": "string",
+          "description": "UPI VPA ID for QR payments"
+        },
+        "merchantName": {
+          "type": "string",
+          "description": "Beneficiary name registered with UPI"
+        },
+        "festivalYear": {
+          "type": "string",
+          "description": "Active Kavadi festival year"
+        },
+        "contactPhone": {
+          "type": "string",
+          "description": "Sangam committee helpline phone number"
+        },
+        "welcomeMessage": {
+          "type": "string",
+          "description": "Blessing message printed on digital receipt and WhatsApp"
+        }
+      },
+      "required": ["id", "sangamNameEnglish", "sangamNameMalayalam", "upiId", "merchantName"]
+    },
+    "Volunteer": {
+      "title": "Volunteer",
+      "description": "Authorized festival volunteer or committee admin profile",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Volunteer user ID or UID"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of volunteer"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Registered contact number"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["admin", "volunteer"],
+          "description": "Role permission tier"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Whether volunteer is authorized for current season"
+        },
+        "totalCollected": {
+          "type": "number",
+          "description": "Running sum of collections recorded"
+        }
+      },
+      "required": ["id", "name", "role", "active"]
+    },
+    "CommitteeMember": {
+      "title": "CommitteeMember",
+      "description": "Sangam committee member with designation and active status for collection duty",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique member identifier"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of committee member"
+        },
+        "phone": {
+          "type": "string",
+          "description": "10-digit mobile phone number"
+        },
+        "designation": {
+          "type": "string",
+          "description": "Designation in Sangam committee"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Active or inactive toggle for on-ground duty"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp"
+        },
+        "userId": {
+          "type": "string",
+          "description": "Immutable primary key login handle"
+        },
+        "password": {
+          "type": "string",
+          "description": "Access credential or PIN"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["ADMIN", "USER"],
+          "description": "RBAC permission role"
+        },
+        "passwordLastChangedAt": {
+          "type": "string",
+          "description": "ISO timestamp when password was last updated"
+        }
+      },
+      "required": ["id", "name", "phone", "designation", "active"]
+    },
+    "ExpenseType": {
+      "title": "ExpenseType",
+      "description": "Master festival expense category head",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique expense type identifier"
+        },
+        "nameMalayalam": {
+          "type": "string",
+          "description": "Malayalam head name"
+        },
+        "nameEnglish": {
+          "type": "string",
+          "description": "English head name"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Active status toggle"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp"
+        }
+      },
+      "required": ["id", "nameMalayalam", "nameEnglish", "active"]
+    },
+    "ReceiptType": {
+      "title": "ReceiptType",
+      "description": "Master festival collection and offering receipt category",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique receipt type identifier"
+        },
+        "nameMalayalam": {
+          "type": "string",
+          "description": "Malayalam receipt type name"
+        },
+        "nameEnglish": {
+          "type": "string",
+          "description": "English receipt type name"
+        },
+        "codePrefix": {
+          "type": "string",
+          "description": "Optional code or serial prefix"
+        },
+        "active": {
+          "type": "boolean",
+          "description": "Active status toggle"
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp"
+        }
+      },
+      "required": ["id", "nameMalayalam", "nameEnglish", "active"]
+    },
+    "User": {
+      "title": "User",
+      "description": "User master record for multi-user authentication and Role-Based Access Control (RBAC)",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Unique login handle or email" },
+        "name": { "type": "string", "description": "Full member or staff name" },
+        "role": { "type": "string", "enum": ["ADMIN", "USER"], "description": "RBAC permission role" },
+        "phone": { "type": "string", "description": "Contact phone number" },
+        "status": { "type": "string", "enum": ["ACTIVE", "INACTIVE"], "description": "Account status" },
+        "password": { "type": "string", "description": "Hashed or default access credential" },
+        "uid": { "type": "string", "description": "Auth UID identifier" },
+        "email": { "type": "string", "description": "Associated user email" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of user creation" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of user update" }
+      },
+      "required": ["userId", "name", "role", "status"]
+    },
+    "AppUser": {
+      "title": "AppUser",
+      "description": "Master user records for admins and volunteer collection agents",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "fullName": { "type": "string" },
+        "username": { "type": "string" },
+        "password": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "volunteer"] },
+        "phone": { "type": "string" },
+        "active": { "type": "boolean" },
+        "createdAt": { "type": "string" },
+        "updatedAt": { "type": "string" }
+      },
+      "required": ["id", "fullName", "username", "password", "role", "active"]
+    },
+    "Commitment": {
+      "title": "Commitment",
+      "description": "Pledge or promised festival contribution record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "transaction_no": { "type": "string", "description": "Format CMT-YYYYMMDD-XXXX" },
+        "name": { "type": "string", "description": "Payee / Donor Full Name" },
+        "house_name": { "type": "string", "description": "House / Residential Name" },
+        "date": { "type": "string", "description": "Commitment Date YYYY-MM-DD" },
+        "place": { "type": "string", "description": "Default ONAMPILLY" },
+        "amount_committed": { "type": "number", "description": "Committed amount in INR" },
+        "data_entry_user": { "type": "string", "description": "Logged in user name" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "transaction_no", "name", "house_name", "date", "place", "amount_committed", "data_entry_user"]
+    },
+    "ReceiptVoucher": {
+      "title": "ReceiptVoucher",
+      "description": "Collection / Receipt voucher installment record",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "transaction_no": { "type": "string", "description": "Format RCP-YYYYMMDD-XXXX" },
+        "commitment_id": { "type": "string", "description": "Linked commitment ID if any" },
+        "receipt_no": { "type": "string", "description": "Physical receipt book number" },
+        "date": { "type": "string", "description": "Collection Date YYYY-MM-DD" },
+        "name": { "type": "string", "description": "Payee name" },
+        "house_name": { "type": "string", "description": "House name" },
+        "place": { "type": "string", "description": "Default ONAMPILLY" },
+        "amount_committed": { "type": "number" },
+        "amount_received": { "type": "number", "description": "Current collected installment" },
+        "balance": { "type": "number", "description": "Remaining balance after payment" },
+        "payment_mode": { "type": "string", "enum": ["Cash", "UPI"] },
+        "amount_collected_by": { "type": "string", "description": "Logged in volunteer name" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "transaction_no", "receipt_no", "date", "name", "house_name", "place", "amount_received", "payment_mode", "amount_collected_by"]
+    },
+    "AdvancePayment": {
+      "title": "AdvancePayment",
+      "description": "Disbursed float advance to committee members",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "voucher_no": { "type": "string" },
+        "date": { "type": "string" },
+        "member_id": { "type": "string" },
+        "member_name": { "type": "string" },
+        "payment_mode": { "type": "string", "enum": ["Cash", "UPI / GPay", "Bank Transfer", "Cheque"] },
+        "amount": { "type": "number" },
+        "purpose": { "type": "string" },
+        "remarks": { "type": "string" },
+        "paid_by_user": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "voucher_no", "date", "member_id", "member_name", "payment_mode", "amount", "purpose", "paid_by_user"]
+    },
+    "DirectExpense": {
+      "title": "DirectExpense",
+      "description": "Actual spent vouchers submitted by members against advances or for reimbursement",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string" },
+        "voucher_no": { "type": "string" },
+        "date": { "type": "string" },
+        "expense_type_id": { "type": "string" },
+        "expense_type_name": { "type": "string" },
+        "expense_name": { "type": "string" },
+        "member_id": { "type": "string" },
+        "claimed_by": { "type": "string" },
+        "amount": { "type": "number" },
+        "bill_reference": { "type": "string" },
+        "remarks": { "type": "string" },
+        "recorded_by": { "type": "string" },
+        "created_at": { "type": "string" },
+        "updated_at": { "type": "string" }
+      },
+      "required": ["id", "voucher_no", "date", "expense_type_id", "expense_type_name", "expense_name", "member_id", "claimed_by", "amount", "bill_reference", "recorded_by"]
+    }
+  },
+  "firestore": {
+    "/advance_payments/{advanceId}": {
+      "schema": {
+        "$ref": "#/entities/AdvancePayment"
+      },
+      "description": "Committee float advance disbursements"
+    },
+    "/direct_expenses/{expenseId}": {
+      "schema": {
+        "$ref": "#/entities/DirectExpense"
+      },
+      "description": "Committee direct expenses and claimed vouchers"
+    },
+    "/commitments/{commitmentId}": {
+      "schema": {
+        "$ref": "#/entities/Commitment"
+      },
+      "description": "Festival donor commitments and pledges"
+    },
+    "/receipt_vouchers/{voucherId}": {
+      "schema": {
+        "$ref": "#/entities/ReceiptVoucher"
+      },
+      "description": "Collection receipt vouchers and installments"
+    },
+    "/transactions/{transactionId}": {
+      "schema": {
+        "$ref": "#/entities/Transaction"
+      },
+      "description": "Collection of all festival income collections, offerings, and expenses"
+    },
+    "/settings/{settingId}": {
+      "schema": {
+        "$ref": "#/entities/Setting"
+      },
+      "description": "System settings, UPI credentials, and festival metadata"
+    },
+    "/volunteers/{volunteerId}": {
+      "schema": {
+        "$ref": "#/entities/Volunteer"
+      },
+      "description": "Registered volunteers and administrators"
+    },
+    "/committee_members/{memberId}": {
+      "schema": {
+        "$ref": "#/entities/CommitteeMember"
+      },
+      "description": "Master list of committee members and designations"
+    },
+    "/members/{memberId}": {
+      "schema": {
+        "$ref": "#/entities/CommitteeMember"
+      },
+      "description": "Master list of committee members with direct login credentials"
+    },
+    "/expense_types/{expenseTypeId}": {
+      "schema": {
+        "$ref": "#/entities/ExpenseType"
+      },
+      "description": "Master festival expense category heads"
+    },
+    "/receipt_types/{receiptTypeId}": {
+      "schema": {
+        "$ref": "#/entities/ReceiptType"
+      },
+      "description": "Master festival collection and offering receipt categories"
+    },
+    "/app_users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/AppUser"
+      },
+      "description": "Master list of login-capable collection agents and admins"
+    },
+    "/categories/{categoryId}": {
+      "schema": {
+        "$ref": "#/entities/ExpenseType"
+      },
+      "description": "Master list of festival expense categories"
+    },
+    "/programs/{programId}": {
+      "schema": {
+        "$ref": "#/entities/Transaction"
+      },
+      "description": "Master list of cultural programs, events and artist bookings"
+    },
+    "/users/{userId}": {
+      "schema": {
+        "$ref": "#/entities/User"
+      },
+      "description": "User master records with RBAC role authorization (ADMIN / USER)"
+    }
+  }
+}

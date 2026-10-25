@@ -1,0 +1,130 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Authentication check
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    // RBAC Role check: Checks developer/admin email, Firestore /users collection or Auth token
+    function isAdmin() {
+      return isAuthenticated() && (
+        request.auth.token.email == 'manu.basi@gmail.com' ||
+        request.auth.token.role == 'ADMIN' ||
+        (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+         get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role == 'ADMIN')
+      );
+    }
+    
+    function isUser() {
+      return isAdmin() || (
+        isAuthenticated() && (
+          request.auth.token.role in ['ADMIN', 'USER'] ||
+          (exists(/databases/$(database)/documents/users/$(request.auth.uid)) &&
+           get(/databases/$(database)/documents/users/$(request.auth.uid)).data.role in ['ADMIN', 'USER'])
+        )
+      );
+    }
+
+    // 1. User Master Collection (/users/{userId})
+    // Supports both Firebase Auth users and in-app multi-user RBAC profiles
+    match /users/{userId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // Legacy app_users mapping
+    match /app_users/{userId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // 2. Master Data: Committee Members (/members and /committee_members)
+    match /members/{memberId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+    match /committee_members/{memberId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // 3. Master Data: Programs (/programs)
+    match /programs/{programId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // 4. Master Data: Expense Categories (/categories and /expense_types)
+    match /categories/{categoryId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+    match /expense_types/{expenseTypeId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+    match /receipt_types/{receiptTypeId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // 5. Transactions & Vouchers (/transactions)
+    match /transactions/{txnId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // 6. Direct Expenses & Advances
+    match /direct_expenses/{expenseId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+    match /advance_payments/{advanceId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+    match /receipt_vouchers/{voucherId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+    match /commitments/{commitmentId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // 7. System Settings & Volunteers
+    match /settings/{settingId} {
+      allow read, write: if true;
+    }
+    match /volunteers/{volunteerId} {
+      allow read: if true;
+      allow create, update: if true;
+      allow delete: if !isAuthenticated() || isAdmin();
+    }
+
+    // 8. Test ping document
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Global fallback
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
